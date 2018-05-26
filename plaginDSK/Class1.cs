@@ -22,8 +22,7 @@ namespace plaginDSK
                 AddLightweightPolyline();
             F.Dispose();
         }
-
-     
+             
 
         [CommandMethod("netpoliline")]
         public void AddLightweightPolyline()

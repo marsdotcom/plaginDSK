@@ -22,7 +22,11 @@ namespace plaginDSK
 
             data2.Clear();
 
-            string[] str = Clipboard.GetText().Split('\n');
+            string text = Clipboard.GetText();
+            if (checkBox1.Checked) text = text.Replace(',', '.');
+
+            string[] str = text.Split('\n');
+            
 
             for (int i = 0; i < str.Length; i++)
             {
