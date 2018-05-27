@@ -99,24 +99,25 @@ namespace plaginDSK
                         yproject = 80,
                         yfact = 30,
                         ypiket = 0,
-                        XBase = 200,
-                        YBase = 100;
+                        textwidth=200,
+                        XBase = 2000,
+                        YBase = 1000;
 
                 foreach (RowPiket R in F.data2)
                 {
-                    Line hLine = new Line(new Point3d(i * F.X+XBase, ygraf, 0), new Point3d(i * F.X + XBase, R.Project * F.Y+F.YBase+ygraf,0));
+                    Line hLine = new Line(new Point3d(i * F.X+XBase, ygraf+YBase, 0), new Point3d(i * F.X + XBase, R.Project * F.Y+F.H+ygraf + YBase, 0));
                     hLine.Layer = mainLayerName;                    
                     acBlkTblRec.AppendEntity(hLine);
                     acTrans.AddNewlyCreatedDBObject(hLine, true);
 
-                    hLine = new Line(new Point3d(i * F.X + XBase, yfact, 0), new Point3d(i * F.X + XBase, yfact-10, 0));
+                    hLine = new Line(new Point3d(i * F.X + XBase, yfact + YBase, 0), new Point3d(i * F.X + XBase, yfact-10 + YBase, 0));
                     hLine.Layer = mainLayerName;
                     acBlkTblRec.AppendEntity(hLine);
                     acTrans.AddNewlyCreatedDBObject(hLine, true);
 
                     DBText projectText = new DBText();
                     projectText.SetDatabaseDefaults();
-                    projectText.Position = new Point3d(i * F.X+ XBase+3, yproject+5, 0);
+                    projectText.Position = new Point3d(i * F.X+ XBase+3, yproject+5 + YBase, 0);
                     projectText.Height = 5;
                     projectText.TextString = R.Project.ToString();
                     projectText.Rotation = Math.PI/2;
@@ -126,7 +127,7 @@ namespace plaginDSK
 
                     DBText factText = new DBText();
                     factText.SetDatabaseDefaults();
-                    factText.Position = new Point3d(i * F.X + XBase+3, yfact+5, 0);
+                    factText.Position = new Point3d(i * F.X + XBase+3, yfact+5 + YBase, 0);
                     factText.Height = 5;
                     factText.TextString = R.Fact.ToString();
                     factText.Rotation = Math.PI / 2;
@@ -136,7 +137,7 @@ namespace plaginDSK
 
                     DBText deltaText = new DBText();
                     deltaText.SetDatabaseDefaults();
-                    deltaText.Position = new Point3d(i * F.X + XBase+3, ydelta+5, 0);
+                    deltaText.Position = new Point3d(i * F.X + XBase+3, ydelta+5 + YBase, 0);
                     deltaText.Height = 5;
                     deltaText.TextString = R.Delta.ToString("N3");
                     deltaText.Rotation = Math.PI / 2;
@@ -146,7 +147,7 @@ namespace plaginDSK
 
                     DBText piketText = new DBText();
                     piketText.SetDatabaseDefaults();
-                    piketText.Position = new Point3d(i * F.X + XBase+F.X/2-5, yfact-10, 0);
+                    piketText.Position = new Point3d(i * F.X + XBase+F.X/2-5, yfact-10 + YBase, 0);
                     piketText.Height = 5;
                     piketText.TextString = F.X.ToString();
                     piketText.Layer = mainLayerName;
@@ -158,7 +159,7 @@ namespace plaginDSK
                     {
                         DBText piketsText = new DBText();
                         piketsText.SetDatabaseDefaults();
-                        piketsText.Position = new Point3d(i * F.X + XBase + 3, ypiket - 20, 0);
+                        piketsText.Position = new Point3d(i * F.X + XBase + 3, ypiket - 20 + YBase, 0);
                         piketsText.Height = 5;
                         piketsText.TextString = R.Piket;
                         piketsText.Rotation = Math.PI / 2;
@@ -166,45 +167,86 @@ namespace plaginDSK
                         acBlkTblRec.AppendEntity(piketsText);
                         acTrans.AddNewlyCreatedDBObject(piketsText, true);
 
-                        hLine = new Line(new Point3d(i * F.X + XBase, yfact, 0), new Point3d(i * F.X + XBase, ypiket, 0));
+                        hLine = new Line(new Point3d(i * F.X + XBase, yfact + YBase, 0), new Point3d(i * F.X + XBase, ypiket + YBase, 0));
                         hLine.Layer = mainLayerName;
                         acBlkTblRec.AppendEntity(hLine);
                         acTrans.AddNewlyCreatedDBObject(hLine, true);
                     }
 
-                    projectPline.AddVertexAt(i, new Point2d(i * F.X + XBase, R.Project * F.Y + F.YBase + ygraf), 0, 0, 0);
-                    factPline.AddVertexAt(i, new Point2d(i * F.X + XBase, R.Fact * F.Y + F.YBase + ygraf), 0, 0, 0);
+                    projectPline.AddVertexAt(i, new Point2d(i * F.X + XBase, R.Project * F.Y + F.H + ygraf + YBase), 0, 0, 0);
+                    factPline.AddVertexAt(i, new Point2d(i * F.X + XBase, R.Fact * F.Y + F.H + ygraf + YBase), 0, 0, 0);
                     i++;
                 }
 
                 i--;
 
-                Line bLine = new Line(new Point3d(0, yfact, 0), new Point3d(i * F.X + XBase, yfact, 0));
+                Line bLine = new Line(new Point3d(XBase-textwidth, yfact+YBase, 0), new Point3d(i * F.X + XBase, yfact + YBase, 0));
                 bLine.Layer = mainLayerName;
                 acBlkTblRec.AppendEntity(bLine);
                 acTrans.AddNewlyCreatedDBObject(bLine, true);
 
-                bLine = new Line(new Point3d(0, yproject, 0), new Point3d(i * F.X + XBase, yproject, 0));
+                DBText TEXT1 = new DBText();
+                TEXT1.SetDatabaseDefaults();
+                TEXT1.Position = new Point3d(XBase + 15-textwidth, yfact + YBase+10, 0);
+                TEXT1.Height = 10;
+                TEXT1.TextString = "Фактические отметки";
+                TEXT1.Layer = factLayerName;
+                acBlkTblRec.AppendEntity(TEXT1);
+                acTrans.AddNewlyCreatedDBObject(TEXT1, true);
+
+                bLine = new Line(new Point3d(XBase - textwidth, yproject + YBase, 0), new Point3d(i * F.X + XBase, yproject + YBase, 0));
                 bLine.Layer = mainLayerName;
                 acBlkTblRec.AppendEntity(bLine);
                 acTrans.AddNewlyCreatedDBObject(bLine, true);
 
-                bLine = new Line(new Point3d(0, ydelta, 0), new Point3d(i * F.X + XBase, ydelta, 0));
+                TEXT1 = new DBText();
+                TEXT1.SetDatabaseDefaults();
+                TEXT1.Position = new Point3d(XBase+15-textwidth, yproject + YBase+10, 0);
+                TEXT1.Height = 10;
+                TEXT1.TextString = "Проектные отметки";
+                TEXT1.Layer = progectLayerName;
+                acBlkTblRec.AppendEntity(TEXT1);
+                acTrans.AddNewlyCreatedDBObject(TEXT1, true);
+
+                bLine = new Line(new Point3d(XBase - textwidth, ydelta + YBase, 0), new Point3d(i * F.X + XBase, ydelta + YBase, 0));
                 bLine.Layer = mainLayerName;
                 acBlkTblRec.AppendEntity(bLine);
                 acTrans.AddNewlyCreatedDBObject(bLine, true);
 
-                bLine = new Line(new Point3d(0, ypiket, 0), new Point3d(i * F.X + XBase, ypiket, 0));
+                TEXT1 = new DBText();
+                TEXT1.SetDatabaseDefaults();
+                TEXT1.Position = new Point3d(XBase + 15 - textwidth, ydelta + YBase + 10, 0);
+                TEXT1.Height = 10;
+                TEXT1.TextString = "Отклонения";
+                TEXT1.Layer = mainLayerName;
+                acBlkTblRec.AppendEntity(TEXT1);
+                acTrans.AddNewlyCreatedDBObject(TEXT1, true);
+
+                bLine = new Line(new Point3d(XBase - textwidth, ypiket + YBase, 0), new Point3d(i * F.X + XBase, ypiket + YBase, 0));
                 bLine.Layer = mainLayerName;
                 acBlkTblRec.AppendEntity(bLine);
                 acTrans.AddNewlyCreatedDBObject(bLine, true);
 
-                bLine = new Line(new Point3d(0, ygraf, 0), new Point3d(i * F.X + XBase, ygraf, 0));
+                TEXT1 = new DBText();
+                TEXT1.SetDatabaseDefaults();
+                TEXT1.Position = new Point3d(XBase + 15 - textwidth, ypiket + YBase + 10, 0);
+                TEXT1.Height = 10;
+                TEXT1.TextString = "Расстояния";
+                TEXT1.Layer = mainLayerName;
+                acBlkTblRec.AppendEntity(TEXT1);
+                acTrans.AddNewlyCreatedDBObject(TEXT1, true);
+
+                bLine = new Line(new Point3d(XBase - textwidth, ygraf + YBase, 0), new Point3d(i * F.X + XBase, ygraf + YBase, 0));
                 bLine.Layer = mainLayerName;
                 acBlkTblRec.AppendEntity(bLine);
                 acTrans.AddNewlyCreatedDBObject(bLine, true);
 
-                bLine = new Line(new Point3d(XBase-F.X, ypiket, 0), new Point3d(XBase-F.X, ygraf, 0));
+                bLine = new Line(new Point3d(XBase-F.X, ypiket + YBase, 0), new Point3d(XBase-F.X, ygraf + YBase, 0));
+                bLine.Layer = mainLayerName;
+                acBlkTblRec.AppendEntity(bLine);
+                acTrans.AddNewlyCreatedDBObject(bLine, true);
+
+                bLine = new Line(new Point3d(XBase - textwidth, ypiket + YBase, 0), new Point3d(XBase - textwidth, ygraf + YBase, 0));
                 bLine.Layer = mainLayerName;
                 acBlkTblRec.AppendEntity(bLine);
                 acTrans.AddNewlyCreatedDBObject(bLine, true);

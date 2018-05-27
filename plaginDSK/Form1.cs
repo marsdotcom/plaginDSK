@@ -15,7 +15,7 @@ namespace plaginDSK
         }
 
         public BindingList<RowPiket> data2;
-        public double X, Y, YBase, Max, Min;
+        public double X, Y, H, Max, Min;
 
         private void Button1_Click(object sender, EventArgs e)
         {
@@ -55,7 +55,7 @@ namespace plaginDSK
         {    
             if (!double.TryParse(textBox1.Text, out X)) X = 1;
             if (!double.TryParse(textBox2.Text, out Y)) Y = 1;
-            if(!double.TryParse(textBox3.Text, out YBase)) YBase = 0;
+            if(!double.TryParse(textBox3.Text, out H)) H = 0;
         }
 
     }
